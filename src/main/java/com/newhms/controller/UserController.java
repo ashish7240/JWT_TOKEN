@@ -40,6 +40,14 @@ public class UserController {
             return new ResponseEntity<>("Invalid username/password",HttpStatus.FORBIDDEN);
         }
     }
+    @PostMapping("/signup-property-owner")
+    public ResponseEntity<?>createPropertyOwnerUser(
+            @RequestBody AppUserDto appUserDto
+    ){
+        AppUserDto userDetails = appUserService.createPropertyOwnerUserDetails(appUserDto);
+        return new ResponseEntity<>(userDetails,HttpStatus.CREATED);
+
+    }
 
 
 }

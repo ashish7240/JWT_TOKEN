@@ -23,7 +23,9 @@ public class SecurityConfiguration {
         httpSecurity.addFilterBefore(jwtFilter, AuthorizationFilter.class);
         //haap
         //httpSecurity.authorizeHttpRequests().anyRequest().permitAll();
-        httpSecurity.authorizeHttpRequests().requestMatchers("/api/v1/user/login","/api/v1/user/signup").permitAll().anyRequest().authenticated();
+        httpSecurity.authorizeHttpRequests().requestMatchers("/api/v1/user/login","/api/v1/user/signup","/api/v1/user/signup-property-owner")
+                .permitAll().requestMatchers("/api/v1/country/addCountry")
+                .hasAnyRole("OWNER","ADMIN").anyRequest().authenticated();
 
         return httpSecurity.build();
     }

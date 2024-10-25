@@ -37,6 +37,26 @@ public class UserService {
         }
         String en = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
         appUser.setPassword(en);
+        appUser.setRole("ROLE_USER");
+        AppUser saved = appUserRepository.save(appUser);
+        AppUserDto appUserDto1 = mapTODto(saved);
+        return appUserDto1;
+    }
+    public AppUserDto createPropertyOwnerUserDetails(AppUserDto appUserDto) {
+        AppUser appUser = mapToEntity(appUserDto);
+
+        Optional<AppUser> opUsername = appUserRepository
+                .findByUsername(appUser.getUsername());
+        if (opUsername.isPresent()){
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+        Optional<AppUser> opEmail = appUserRepository.findByEmail(appUser.getEmail());
+        if (opEmail.isPresent()){
+            throw new UserAlreadyExistsException("Email has already exist");
+        }
+        String en = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
+        appUser.setPassword(en);
+        appUser.setRole("ROLE_OWNER");
         AppUser saved = appUserRepository.save(appUser);
         AppUserDto appUserDto1 = mapTODto(saved);
         return appUserDto1;
